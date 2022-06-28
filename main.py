@@ -86,7 +86,7 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 continue
             if len(new_messages) == 0:
                 print("No messages Detected")
-                if detect(1):
+                if detect(3):
                     exit = True
                     break
             else:
@@ -94,7 +94,7 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 break
         
         # Get command message and run it
-        for message in new_messages:
+        for message in new_messages[-1:]:
             sender_id = message.sender.id
             # Check the command keyword
             if message.type in ['image','video','sticker']:
@@ -186,8 +186,7 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 # post-processing to create function
                 params = inspect.getfullargspec(eval(name_function)).args
                 n = len(params)
-                docs = f"""
-                if first_line[0] == '\\\\{name_function}':
+                docs = f"""if first_line[0] == '\\\\{name_function}':
                     Arg = []
                     if len(first_line[1:]) != 0:
                         for param in first_line[1:]:
