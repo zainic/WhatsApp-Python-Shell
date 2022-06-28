@@ -60,6 +60,8 @@ def login():
     print("The user has been login")
     return driver
 
+driver = login()
+
 def main(only_me = True, chat_id = "628568002060@c.us"):
     # if only_me set to be True, only you can use this command
     # chat_id can be customized
@@ -106,8 +108,18 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
             else:
                 continue
             
-            for code_command in LIST_COMMANDS:
-                exec(code_command)
+            for i, code_command in enumerate(LIST_COMMANDS):
+                """
+                Checked the custom command
+                """
+                old_stdout = sys.stdout
+                try:
+                    exec(code_command)
+                except Exception as e:
+                    message.reply_message("The command couldn't run because of " + str(e) + "\nThe command removed from list")
+                    LIST_COMMANDS.pop(i)
+                sys.stdout = old_stdout
+                    
             
             if first_line[0] == '\\exit':
                 """
@@ -144,17 +156,18 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 This function allows us to add our own command using WhatsApp
                 
                 Ex:
-                '\add function output
+                '\add function
                 def function(input1, input2):
-                    result = input1 + input2
+                    result = int(input1) + int(input2)
                     output = result/2
                     return output'
                     
                 (without using '' and the code should be in the next line after initial command)
-                (The function and output variable should be matched)
+                (The function variable should be matched)
                 
                 To run your function in WhatsApp, it should be
                 '\function input1 input2' 
+                note : remenber all input from WhatsApp are string
                 
                 Ex:
                 '\function 10 20'
@@ -162,32 +175,35 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 15
                 """
                 code = "\n".join(command[1:])
-                # post-processing to create function
                 name_function = first_line[1]
-                output = first_line[2]
-                params = inspect.getfullargspec(name_function).args
+                exec("global " + name_function)
+                try:
+                    exec(code)
+                except Exception as e:
+                    E = "Failed to run the code because of " + str(e)
+                    print(E)
+                    message.reply_message(str(E))
+                    continue
+                # post-processing to create function
+                params = inspect.getfullargspec(eval(name_function)).args
                 n = len(params)
                 docs = f"""
-                if first_line[0] == '\\{name_function}':
-                    Arg = ''
+                if first_line[0] == '\\\\{name_function}':
+                    Arg = []
                     if len(first_line[1:]) != 0:
-                        for i, param in enumerate(first_line[1:]):
-                            Arg += param
-                            if i < {n}-1:
-                                Arg += ','
-                    old_stdout = sys.stdout
+                        for param in first_line[1:]:
+                            Arg.append(param)
+                            
                     new_stdout = io.StringIO()
                     sys.stdout = new_stdout
                     
-                    output_function = {name_function}(Arg)
-                    print(output_function)
-                    
-                    sys.stdout = old_stdout
+                    print({name_function}(*Arg))
                     
                     output = new_stdout.getvalue()
                     message.reply_message(str(output))
                 """
                 LIST_COMMANDS.append(docs)
+                print(f"command {name_function} with parameters {params} was created")
             
             
             
