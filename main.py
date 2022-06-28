@@ -41,7 +41,7 @@ def run(code):
 driver = WhatsAPIDriver()
 chat_id = "120363041488034042@g.us"
 exit = False
-list_custom_commands = []
+LIST_COMMANDS = []
 
 # Check Login
 while driver.wait_for_login() == False:
@@ -94,8 +94,8 @@ def main():
             else:
                 continue
             
-            for custom in list_custom_commands:
-                exec(custom)
+            for code_command in LIST_COMMANDS:
+                exec(code_command)
             
             if first_line[0] == '\\run':
                 """
@@ -150,10 +150,11 @@ def main():
                 docs = f"""
                 if first_line[0] == '\\{name_function}':
                     Arg = ''
-                    for i,param in enumerate(first_line[1:]):
-                        Arg += param
-                        if i != {n}-1:
-                            Arg += ','
+                    if len(first_line[1:]) != 0:
+                        for i, param in enumerate(first_line[1:]):
+                            Arg += param
+                            if i < {n}-1:
+                                Arg += ','
                     old_stdout = sys.stdout
                     new_stdout = io.StringIO()
                     sys.stdout = new_stdout
@@ -166,7 +167,7 @@ def main():
                     output = new_stdout.getvalue()
                     message.reply_message(str(output))
                 """
-                list_custom_commands.append(docs)
+                LIST_COMMANDS.append(docs)
             
             
             
