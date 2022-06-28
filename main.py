@@ -117,7 +117,6 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                     exec(code_command)
                 except Exception as e:
                     message.reply_message("The command couldn't run because of " + str(e) + "\nThe command removed from list")
-                    LIST_COMMANDS.pop(i)
                 sys.stdout = old_stdout
                     
             
