@@ -222,6 +222,10 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 '\cd name_folder' 
                 note : if file doesn't exist it won't move
                 
+                To send the file from current dir
+                '\send name_file1 name_file2'
+                note : if you want to send folder, you need to archive it first
+                
                 To exit the explorer type this command
                 '\quit'
                 
@@ -273,7 +277,7 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                             quit = True
                             break
                         
-                        if first[0] == '\\run':
+                        elif first[0] == '\\run':
                             """
                             Run python command
                             """
@@ -281,13 +285,24 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                             output = run(code)
                             msg.reply_message(str(output))
                         
-                        if first[0] == '\\cd':
+                        elif first[0] == '\\cd':
                             """
                             Open the folder or navigate the explorer
                             """
                             show = True
                             temp_dir = directory
                             directory = os.path.join(directory, first[1])
-                
+                            
+                        elif first[0] == "\\send":
+                            """
+                            Send file from current dir
+                            """
+                            for file in first[1:]:
+                                try:
+                                    path = os.path.join(directory, file)
+                                    driver.send_media(path, chat_id, str(file))
+                                except:
+                                    msg.reply_message(f"file {file} is doesn't exist or file is not support to send")
+                                    
                 print("Quitting the explorer")
                 msg.reply_message("Quitting the explorer")
