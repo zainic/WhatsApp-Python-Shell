@@ -6,7 +6,7 @@ import time
 import io
 import inspect
 import os, sys
-import random
+import re
 import cv2
 
 """
@@ -56,7 +56,7 @@ def check_new_message(driver, chat_id, include_me=True, exit=False):
             continue
         if len(new_messages) == 0:
             print("No messages Detected")
-            if detect(3):
+            if detect(5):
                 exit = True
                 break
         else:
@@ -102,15 +102,17 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
         for message in new_messages:
             sender_id = message.sender.id
             # Check the command keyword
-            if message.type in ['image','video','sticker']:
-                continue
-            if message.content[0] == "\\":
-                if only_me == True and sender_id != "628568002060@c.us":
-                    print("This user can't use the bot")
+            try:
+                if message.content[0] == "\\":
+                    if only_me == True and sender_id != "628568002060@c.us":
+                        print("This user can't use the bot")
+                        continue
+                    command = message.content.split('\n')
+                    first_line = command[0].split()
+                else:
                     continue
-                command = message.content.split('\n')
-                first_line = command[0].split()
-            else:
+            except Exception as e:
+                print(e)
                 continue
             
             for i, code_command in enumerate(LIST_COMMANDS):
@@ -223,7 +225,7 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 note : if file doesn't exist it won't move
                 
                 To send the file from current dir
-                '\send name_file1 name_file2'
+                '\send "name_file1" "name_file2"'
                 note : if you want to send folder, you need to archive it first
                 
                 To exit the explorer type this command
@@ -259,17 +261,19 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                     for msg in messages:
                         sender_id2 = msg.sender.id
                         # Check the command keyword
-                        if msg.type in ['image','video','sticker']:
-                            continue
-                        if msg.content[0] == "\\":
-                            if only_me == True and sender_id2 != "628568002060@c.us":
-                                print("This user can't use the bot")
+                        try:
+                            if msg.content[0] == "\\":
+                                if only_me == True and sender_id2 != "628568002060@c.us":
+                                    print("This user can't use the bot")
+                                    continue
+                                cmd = msg.content.split('\n')
+                                first = cmd[0].split()
+                            else:
                                 continue
-                            cmd = msg.content.split('\n')
-                            first = cmd[0].split()
-                        else:
+                        except Exception as e:
+                            print(e)
                             continue
-                        
+                            
                         if first[0] == '\\quit':
                             """
                             Exit the virtual explorer
@@ -297,12 +301,16 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                             """
                             Send file from current dir
                             """
-                            for file in first[1:]:
+                            regex = r'"([^\"]*)"'
+                            files = re.findall(regex, cmd[0])
+                            for file in files:
                                 try:
                                     path = os.path.join(directory, file)
                                     driver.send_media(path, chat_id, str(file))
+                                    print("File sent successfully")
                                 except:
                                     msg.reply_message(f"file {file} is doesn't exist or file is not support to send")
+                                    print("Failed to send file")
                                     
                 print("Quitting the explorer")
                 msg.reply_message("Quitting the explorer")
