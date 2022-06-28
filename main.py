@@ -9,6 +9,16 @@ import os, sys
 import random
 import cv2
 
+"""
+This Program allow us to run the python code and return the output into WhatsApp.
+Even you can create your own command in WhatsApp.
+
+BIG CAUTION:
+IF YOU ARE NOT CAREFULL THIS PROGRAM COULD CRASH YOUR ENTIRE PC.
+BE CAREFULL WHATEVER WHOM YOU GONNA USE THIS PROGRAM WITH.
+USE THIS PROGRAM WITH WHOEVER YOU TRUST.
+"""
+
 # function for interrupt detection
 def detect(timer):
     try:
@@ -36,7 +46,7 @@ def run(code):
         print(type(e))
     return output
 
-chat_id = "628568002060@c.us" # 120363041488034042@g.us
+chat_id = "628568002060@c.us" # 120363041488034042@g.us (this can be customized)
 LIST_COMMANDS = []
 
 def login():
@@ -53,7 +63,7 @@ def login():
     print("The user has been login")
     return driver
 
-def main(only_me = True):
+def main(only_me = True): # if only_me set to be True, only you can use this command
     exit = False
     while not exit:
         # Check if server still connected
@@ -123,7 +133,8 @@ def main(only_me = True):
                 10
                 and it'll send to WhatsApp
                 
-                If there is an exception, it'll send the exception and the type of exception
+                - If there is an exception, it'll send the exception and the type of exception
+                - If you declare function and want call it later write 'global function' before define the function
                 """
                 code = "\n".join(command[1:])
                 output = run(code)
