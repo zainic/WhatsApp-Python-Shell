@@ -33,20 +33,17 @@ def run(code):
         old_stdout = sys.stdout
         new_stdout = io.StringIO()
         sys.stdout = new_stdout
-        
         exec(code)
-        
         sys.stdout = old_stdout
-        
         output = new_stdout.getvalue()
         print(output)
     except Exception as e:
+        sys.stdout = old_stdout
         output = str(e)
         print(e)
         print(type(e))
     return output
 
-chat_id = "628568002060@c.us" # 120363041488034042@g.us (this can be customized)
 LIST_COMMANDS = []
 
 def login():
@@ -63,7 +60,9 @@ def login():
     print("The user has been login")
     return driver
 
-def main(only_me = True): # if only_me set to be True, only you can use this command
+def main(only_me = True, chat_id = "628568002060@c.us"):
+    # if only_me set to be True, only you can use this command
+    # chat_id can be customized
     exit = False
     while not exit:
         # Check if server still connected
