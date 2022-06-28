@@ -224,7 +224,7 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 '\cd name_folder' 
                 note : if file doesn't exist it won't move
                 
-                To send the file from current dir
+                To send the file from current dir (use "" for each file)
                 '\send "name_file1" "name_file2"'
                 note : if you want to send folder, you need to archive it first
                 
@@ -233,8 +233,15 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                 
                 """
                 try:
-                    directory = os.path.join(first_line[1])
+                    regex = r'"([^\"]*)"'
+                    path_folder = re.search(regex, cmd[0]).groups()[0]
+                    directory = os.path.join(path_folder)
+                    _ = os.listdir(directory)
                 except:
+                    try:
+                        message.reply_message(f"directory {path_folder} is doesn't exist")
+                    except:
+                        pass    
                     directory = os.path.join('.')
                 show = True
                 quit = False 
@@ -294,8 +301,13 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                             Open the folder or navigate the explorer
                             """
                             show = True
+                            regex = r'"([^\"]*)"'
                             temp_dir = directory
-                            directory = os.path.join(directory, first[1])
+                            try:
+                                folder = re.search(regex, cmd[0]).groups()[0]
+                            except:
+                                folder = first[1]
+                            directory = os.path.join(directory, folder)
                             
                         elif first[0] == "\\send":
                             """
