@@ -37,22 +37,25 @@ def run(code):
         print(type(e))
     return output
 
-# Initial Login
-driver = WhatsAPIDriver()
-chat_id = "120363041488034042@g.us"
-exit = False
+chat_id = "628568002060@c.us"
 LIST_COMMANDS = []
 
-# Check Login
-while driver.wait_for_login() == False:
-    print("The user currently not login")
-    time.sleep(5)
-    
-# User already login
-print("The user has been login")
+def login():
+    # Initial Login
+    global driver
+    driver = WhatsAPIDriver()
+
+    # Check Login
+    while driver.wait_for_login() == False:
+        print("The user currently not login")
+        time.sleep(5)
+        
+    # User already login
+    print("The user has been login")
 
 def main():
-    while True:
+    exit = False
+    while not exit:
         # Check if server still connected
         if not driver.is_connected():
             print("Connecting To Server")
@@ -78,10 +81,6 @@ def main():
             else:
                 print("Message Detected")
                 break
-                
-        # Check exit
-        if exit:
-            break
         
         # Get command message and run it
         for message in new_messages:
