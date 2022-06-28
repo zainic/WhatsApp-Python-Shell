@@ -12,7 +12,6 @@ import cv2
 # function for interrupt detection
 def detect(timer):
     try:
-        print('no')
         time.sleep(timer)
         return False
     except KeyboardInterrupt:
@@ -37,7 +36,7 @@ def run(code):
         print(type(e))
     return output
 
-chat_id = "628568002060@c.us"
+chat_id = "628568002060@c.us" # 120363041488034042@g.us
 LIST_COMMANDS = []
 
 def login():
@@ -52,8 +51,9 @@ def login():
         
     # User already login
     print("The user has been login")
+    return driver
 
-def main():
+def main(only_me = True):
     exit = False
     while not exit:
         # Check if server still connected
@@ -84,10 +84,14 @@ def main():
         
         # Get command message and run it
         for message in new_messages:
+            sender_id = message.sender.id
             # Check the command keyword
             if message.type in ['image','video','sticker']:
                 continue
             if message.content[0] == "\\":
+                if only_me == True and sender_id != "628568002060@c.us":
+                    print("This user can't use the bot")
+                    continue
                 command = message.content.split('\n')
                 first_line = command[0].split()
             else:
@@ -95,6 +99,13 @@ def main():
             
             for code_command in LIST_COMMANDS:
                 exec(code_command)
+            
+            if first_line[0] == '\\exit':
+                """
+                Exit the connection to driver
+                """
+                exit = True
+                break
             
             if first_line[0] == '\\run':
                 """
