@@ -27,6 +27,8 @@ Create python shell in WhatsApp. It's allow us to connect the phone and PC using
     python-magic
     ```
     
+4. Stable Internet Connection
+    
 ## How to Setup
 
 ### Step 1
