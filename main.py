@@ -35,12 +35,14 @@ def run(code):
         sys.stdout = old_stdout
         output = new_stdout.getvalue()
         print(output)
+        fail = True
     except Exception as e:
         sys.stdout = old_stdout
         output = str(e)
         print(e)
         print(type(e))
-    return output
+        fail = True
+    return output, fail
 
 # Check new message
 def check_new_message(driver, chat_id, include_me=True, exit=False):
@@ -86,6 +88,7 @@ chat_id = input("Input your group id or chat id for place the bot\nThe instructi
 def start(only_me = True, chat_id = chat_id, user_id = user_id):
     # if only_me set to be True, only you can use this command
     # chat_id can be customized
+    banned_id = []
     exit = False
     while not exit:
         # Check if server still connected
@@ -107,6 +110,10 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                 if message.content[0] == "\\":
                     if only_me == True and sender_id != user_id:
                         print("This user can't use the bot")
+                        continue
+                    if sender_id in banned_id:
+                        print("user banned")
+                        message.reply_message(f"sorry sir {sender_id} you have been banned")
                         continue
                     command = message.content.split('\n')
                     first_line = command[0].split()
@@ -136,6 +143,90 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                 print("Exit the bot")
                 break
             
+            if first_line[0] == '\\home':
+                """
+                Bot move to user id
+                It prevent spamming from group
+                """
+                chat_id = user_id
+            
+            if first_line[0] == '\\ban':
+                """
+                This function allow us to ban someone from using this bot
+                
+                To move into personal chat:
+                '\ban number_id@c.us'
+                Ex :
+                '\ban 6281234567890@c.us'
+                
+                (without using '')
+                """
+                if first_line[1] != user_id:
+                    banned_id.append(first_line[1])
+                    message.reply_message(f"successfully ban {first_line[1]}")
+                else:
+                    message.reply_message(f"failed to ban {first_line[1]} because he's the creator")
+            
+            if first_line[0] == '\\whitelist':
+                """
+                This function allow us to remove someone from banned using this bot
+                
+                To move into personal chat:
+                '\whitelist number_id@c.us'
+                Ex :
+                '\whitelist 6281234567890@c.us'
+                
+                (without using '')
+                """
+                if sender_id == user_id:
+                    if first_line[1] in banned_id:
+                        banned_id.remove(first_line[1])
+                        message.reply_message(f"whitelist {first_line[1]}")
+                    else:
+                        print("the number is not in banned list")
+                        message.reply_message(f"{first_line[1]} is not in banned list")
+                else:
+                    message.reply_message(f"You are not allowed whitelist someone")
+            if first_line[0] == '\\change':
+                """
+                This function allow us to change the target of bot or move the bot's place
+                
+                To move into personal chat:
+                '\change number_id@c.us'
+                Ex :
+                '\change 6281234567890@c.us'
+                
+                To move into group:
+                '\change group_id@g.us'
+                Ex :
+                '\change 120363041488034042@g.us'
+                
+                (without using '')
+                """
+                new_chat_id = first_line[1]
+                id_type = new_chat_id[-4:]
+                if id_type == "c.us":
+                    stat = driver.check_number_status(new_chat_id).status
+                    if stat == 200:
+                        chat_id = new_chat_id
+                        message.reply_message(f"Success to move to {new_chat_id}")
+                        print("Success to move")
+                    else:
+                        message.reply_message(f"Failed to move to {new_chat_id} because user inactive or invalid number")
+                        print("User inactive or not valid number")
+                elif id_type == "g.us":
+                    member = driver.group_get_participants_ids(new_chat_id)
+                    if len(member) > 0:
+                        chat_id = new_chat_id
+                        message.reply_message(f"Success to move to {new_chat_id}")
+                        print("Success to move")
+                    else:
+                        message.reply_message(f"Failed to move to {new_chat_id} because of not participant of this group or invalid group")
+                        print("You are not participant of this group or invalid group")
+                else:
+                    message.reply_message(f"Cannot move to {new_chat_id} because of invalid id")
+                    print("Failed to move the bot because of invalid id")
+            
             if first_line[0] == '\\run':
                 """
                 This function allows us to run python program like in command prompt or shell
@@ -156,8 +247,44 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                 - If you declare function and want call it later write 'global function' before define the function
                 """
                 code = "\n".join(command[1:])
-                output = run(code)
+                output, _ = run(code)
                 message.reply_message(str(output))
+                
+            if first_line[0] == '\\runs':
+                """
+                This function similar to run command but it allow us to send to specific person.
+                It can be multiple of them.
+                
+                Ex :
+                '\runs chat_id1 chat_id2 chat_id3
+                f = lambda x: x+5
+                y = f(5)
+                print(y)'
+                
+                (without using '' and the output code will be send to those id)
+                (can be more than 3)
+                
+                the output would be:
+                10
+                and it'll send to those id
+                
+                - If there is an exception, it'll send the exception and the type of exception
+                - If you declare function and want call it later write 'global function' before define the function
+                """
+                code = "\n".join(command[1:])
+                output, fail = run(code)
+                if fail:
+                    message.reply_message(str(output) + "\nNot continue sending message")
+                    continue
+                i = 0
+                total = len(first_line[1:])
+                for id_number in first_line[1:]:
+                    try:
+                        driver.chat_send_message(id_number, str(output))
+                        i += 1
+                    except:
+                        print(f"Failed to send to {id_number}")
+                message.reply_message(f"sent {i} from {total} detected")
                 
             if first_line[0] == '\\add':
                 """
@@ -295,7 +422,7 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                             Run python command
                             """
                             code = "\n".join(cmd[1:])
-                            output = run(code)
+                            output, _ = run(code)
                             msg.reply_message(str(output))
                         
                         elif first[0] == '\\cd':
