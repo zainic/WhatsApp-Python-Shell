@@ -135,6 +135,7 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                 Exit the connection to driver
                 """
                 exit = True
+                print("Exit the bot")
                 break
             
             if first_line[0] == '\\run':
@@ -311,6 +312,7 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                             except:
                                 folder = first[1]
                             directory = os.path.join(directory, folder)
+                            print(f"current directory {directory}")
                             
                         elif first[0] == "\\send":
                             """
@@ -321,6 +323,7 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                             for file in files:
                                 try:
                                     path = os.path.join(directory, file)
+                                    print(f"Sending {file} to WhatsApp")
                                     driver.send_media(path, chat_id, str(file))
                                     print("File sent successfully")
                                 except:
@@ -350,15 +353,27 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                     msgs = [msg.sender.id for msg in pictures]
                     pic_check = [X.type == 'image' or X.type == 'video' for X in pictures]
                     if message.sender.id in msgs and any(pic_check) == True:
+                        print("Picture was detected")
                         break
                     print("No pictures were detected")
                     
                 for picture in pictures:
                     name = picture.filename
-                    picture.save_media(r".\temp", force_download=True)
+                    try:
+                        _ = os.listdir(os.path.join(".","temp"))
+                    except FileNotFoundError:
+                        os.mkdir(os.path.join(".","temp"))
+                    try:
+                        print("Try to download the image to local directory")
+                        picture.save_media(os.path.join(".","temp"), force_download=True)
+                    except:
+                        print("Failed to download")
+                        message.reply_message("Failed to download file because couldn't connect to server")
+                        continue
                     path = os.path.join(".", "temp", name)
                     i = 1
-                    while i <= 10:
+                    print("Uploading the sticker")
+                    while i <= 5:
                         try:
                             print("Trying number " + str(i))
                             driver.send_image_as_sticker(path, chat_id)
@@ -366,5 +381,5 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                         except:
                             print("Failed to upload")
                             i += 1
-                    if i > 10:
+                    if i > 5:
                         print("Maximum trial exceed")
