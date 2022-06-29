@@ -27,6 +27,8 @@ Create python shell in WhatsApp. It's allow us to connect the phone and PC using
     python-magic
     ```
     
+4. Stable Internet Connection
+    
 ## How to Setup
 
 ### Step 1
@@ -59,9 +61,9 @@ If you didnt know the target chat id, just enter it empty
 
 How to get chat id is write this on your python shell
 
-* To get all chat ids in your WhatsApp : `driver.get_all_chats` 
+* To get all chat ids in your WhatsApp : `driver.get_all_chats()` 
     
-* To only get all groups : `driver.get_all_groups` 
+* To only get all groups : `driver.get_all_groups()` 
     
 ### Step 5
 If you already input all ids in the first time, to run the bot just run this function
@@ -180,5 +182,7 @@ Then, it will wait the command sender to upload the image
 It should return picture into sticker once they send the image
                 
 ### exit
+
+`\exit`
 
 Exit the connection to driver
