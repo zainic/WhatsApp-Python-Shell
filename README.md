@@ -85,7 +85,7 @@ After that you can run the command in your WhatsApp
 ## How to Use It
 
 ### run
-This function allows us to run python program like in command prompt or shell
+This function allows us to run python program like in command prompt or shell.
 
 
 Ex :
@@ -97,21 +97,48 @@ y = f(5)
 print(y)
 ```
 
-(the code should be in the next line after initial command)
+(the code should be in the next line after initial command.)
                 
 the output would be:
 
 `10`
 
-and it'll send to WhatsApp
+and it'll send to WhatsApp.
                 
 
-- If there is an exception, it'll send the exception and the type of exception
+- If there is an exception, it'll send the exception and the type of exception.
 
-- If you declare function and want call it later write `global function` before define the function
+- If you declare function and want call it later write `global function` before define the function.
+
+### runs
+
+This function similar to run command but it allow us to send to specific person.
+
+It can be multiple of them.
+                
+Ex :
+
+```
+\runs chat_id1 chat_id2 chat_id3
+f = lambda x: x+5
+y = f(5)
+print(y)
+```
+                
+(the output code will be send to those id and it can be more than 3)
+                
+the output would be:
+
+`10`
+
+and it'll send to those id
+                
+- If there is an exception, it'll send the exception and the type of exception to the place where the bot at.
+
+- If you declare function and want call it later write 'global function' before define the function.
 
 ### add
-This function allows us to add our own command using WhatsApp
+This function allows us to add our own command using WhatsApp.
                 
 Ex:
 
@@ -129,7 +156,7 @@ To run your function in WhatsApp, it should be
 
 `\function input1 input2` 
 
-note : remenber all input from WhatsApp are string
+note : remenber all input from WhatsApp are string.
                 
 Ex:
 
@@ -141,9 +168,9 @@ The output should be
                 
 ### open_dir
 
-This function allows us to explore our PC's folder using WhatsApp
+This function allows us to explore our PC's folder using WhatsApp.
 
-It will disable other function while you use it except run command
+It will disable other function while you use it except run command.
                 
 Ex:
 
@@ -155,13 +182,13 @@ To navigate your path you can use cd function like bash
 
 `\cd name_folder` 
 
-note : if file doesn't exist it won't move
+note : if file doesn't exist it won't move.
                 
 To send the file from current dir (use "" for each file)
 
 `\send "name_file1" "name_file2"`
 
-note : if you want to send folder, you need to archive it first
+note : if you want to send folder, you need to archive it first.
                 
 To exit the explorer type this command
 
@@ -169,7 +196,7 @@ To exit the explorer type this command
 
 ### sticker
 
-This function will allow us to convert any image into sticker in WhatsApp
+This function will allow us to convert any image into sticker in WhatsApp.
                 
 Ex:
 
@@ -177,12 +204,64 @@ Ex:
 
 (send it first)  
                 
-Then, it will wait the command sender to upload the image
+Then, it will wait the command sender to upload the image.
                 
-It should return picture into sticker once they send the image
+It should return picture into sticker once they send the image.
+
+### change
+
+This function allow us to change the target of bot or move the bot's place.
+                
+To move into personal chat:
+
+`\change number_id@c.us`
+
+Ex :
+
+`\change 6281234567890@c.us`
+                
+To move into group:
+
+`\change group_id@g.us`
+
+Ex :
+
+`\change 120363041488034042@g.us`
+
+### ban
+
+This function allow us to ban someone from using this bot.
+                
+To ban the number:
+
+`\ban number_id@c.us`
+
+Ex :
+
+`\ban 6281234567890@c.us`
+
+### whitelist
+
+This function allow us to remove someone from banned using this bot.
+                
+To remove number from ban:
+
+`\whitelist number_id@c.us`
+
+Ex :
+
+`\whitelist 6281234567890@c.us`
+
+### home
+
+`\home`
+
+Bot move to user id.
+                
+It prevent spamming from group.
                 
 ### exit
 
 `\exit`
 
-Exit the connection to driver
+Exit the connection to driver.
