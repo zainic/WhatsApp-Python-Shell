@@ -1,4 +1,3 @@
-from ast import arguments
 from openwa import WhatsAPIDriver
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +6,6 @@ import io
 import inspect
 import os, sys
 import re
-import cv2
 
 """
 This Program allow us to run the python code and return the output into WhatsApp.
