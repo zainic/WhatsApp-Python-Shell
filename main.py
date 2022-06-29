@@ -82,7 +82,10 @@ def login():
 
 driver = login()
 
-def main(only_me = True, chat_id = "628568002060@c.us"):
+user_id = input("Input your number using your country code for first digit and end with @c.us \nEx : 6281349237723@c.us (62 for Indonesia)\ninput here :")
+chat_id = input("Input your group id or chat id for place the bot\nThe instruction to get the id would be on README\ninput here :")
+
+def start(only_me = True, chat_id = chat_id, user_id = user_id):
     # if only_me set to be True, only you can use this command
     # chat_id can be customized
     exit = False
@@ -104,7 +107,7 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
             # Check the command keyword
             try:
                 if message.content[0] == "\\":
-                    if only_me == True and sender_id != "628568002060@c.us":
+                    if only_me == True and sender_id != user_id:
                         print("This user can't use the bot")
                         continue
                     command = message.content.split('\n')
@@ -270,7 +273,7 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                         # Check the command keyword
                         try:
                             if msg.content[0] == "\\":
-                                if only_me == True and sender_id2 != "628568002060@c.us":
+                                if only_me == True and sender_id2 != user_id:
                                     print("This user can't use the bot")
                                     continue
                                 cmd = msg.content.split('\n')
@@ -326,3 +329,42 @@ def main(only_me = True, chat_id = "628568002060@c.us"):
                                     
                 print("Quitting the explorer")
                 msg.reply_message("Quitting the explorer")
+                
+            if first_line[0] == "\\sticker":
+                """
+                This function will allow us to convert any image into sticker in WhatsApp
+                
+                Ex:
+                \sticker 
+                (send it first)  
+                
+                Then
+                it will wait the command sender to upload the image
+                
+                it should return picture into sticker once they send the image
+                """ 
+                sender_id = message.sender.id
+                while True:
+                    time.sleep(4)
+                    pictures = driver.get_unread_messages_in_chat(chat_id, include_me=True)
+                    msgs = [msg.sender.id for msg in pictures]
+                    pic_check = [X.type == 'image' or X.type == 'video' for X in pictures]
+                    if message.sender.id in msgs and any(pic_check) == True:
+                        break
+                    print("No pictures were detected")
+                    
+                for picture in pictures:
+                    name = picture.filename
+                    picture.save_media(r".\temp", force_download=True)
+                    path = os.path.join(".", "temp", name)
+                    i = 1
+                    while i <= 10:
+                        try:
+                            print("Trying number " + str(i))
+                            driver.send_image_as_sticker(path, chat_id)
+                            break
+                        except:
+                            print("Failed to upload")
+                            i += 1
+                    if i > 10:
+                        print("Maximum trial exceed")
