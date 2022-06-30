@@ -206,52 +206,52 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                     """
                     message.reply_message(
 r"""
-WhatsApp Bot v1.0.2
-
-Basic Command:
-\help = Create this help list
-\exit = Exit the bot
-\home = Move bot to user id place
-
-Operator Command :
-\ban = Ban someone from using this bot
-    Syntax : \ban number_id@c.us
-\whitelist = Remove someone from banned using this bot
-    Syntax : \whitelist number_id@c.us
-\change = Change the target of bot or move the bot's place
-    Syntax : \change number_id@c.us 
-            \change group_id@g.us
-
-General Command :
-\run = Run python program
-    Syntax : \run
-            your_line_code_1
-            your_line_code_2
-            your_line_code_3
-            more_line
-\runs = Similar to run command but send to multiple target
-    Syntax : \runs number_id1 number_id2 number_id3
-\add = Add custom command to this bot
-    Syntax : \add function
-            def function(input1, input2):
-                your_line_code_1
-                your_line_code_2
-                your_line_code_3
-                return optional
-    To call the command : \function input1 input2
-\open_dir = Open and list file_path directory like explorer 
-            (default : current directory or github directory)
-    Syntax : \open_dir "file_path"
-    Sub command from this command :
-        \quit = Quit the explorer
-        \cd = Open the folder
-            Syntax : \cd "name_folder"
-        \send = Send file from current directory
-            Syntax : \send "name_file"
-\sticker = Convert image from command's sender into whatsapp sticker
-    Syntax : \sticker
-        *Send the command first
-            Upload the image
+```WhatsApp Bot v1.0.2```
+``` ```
+```Basic Command:```
+```\help = Create this help list```
+```\exit = Exit the bot```
+```\home = Move bot to user id place```
+``` ```
+```Operator Command :```
+```\ban = Ban someone from using this bot```
+```  Syntax : \ban number_id@c.us```
+```\whitelist = Remove someone from banned using this bot```
+```  Syntax : \whitelist number_id@c.us```
+```\change = Change the target of bot or move the bot's place```
+```  Syntax : \change number_id@c.us ```
+```           \change group_id@g.us```
+``` ```
+```General Command :```
+```\run = Run python program```
+```  Syntax : \run```
+```           your_line_code_1```
+```           your_line_code_2```
+```           your_line_code_3```
+```           more_line```
+```\runs = Similar to run command but send to multiple target```
+```  Syntax : \runs number_id1 number_id2 number_id3```
+```\add = Add custom command to this bot```
+```  Syntax : \add function```
+```            def function(input1, input2):```
+```              your_line_code_1```
+```              your_line_code_2```
+```              your_line_code_3```
+```              return optional```
+```  To call the command : \function input1 input2```
+```\open_dir = Open and list file_path directory like explorer ```
+```            (default : current directory or github directory)```
+```  Syntax : \open_dir "file_path"```
+```  Sub command from this command :```
+```    \quit = Quit the explorer```
+```    \cd = Open the folder```
+```      Syntax : \cd "name_folder"```
+```    \send = Send file from current directory```
+```       Syntax : \send "name_file"```
+```\sticker = Convert image from command's sender into whatsapp sticker```
+```    Syntax : \sticker```
+```        *Send the command first```
+```            Upload the image```
 """
                     )
                     
