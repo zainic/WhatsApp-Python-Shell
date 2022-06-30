@@ -74,15 +74,15 @@ def create_table_from_dir(directory):
         current_files['size'].append(i.stat().st_size)
     longest_name = int(np.max([len(name) for name in current_files['name']]))
     longest_size = int(np.max([len(str(size)) for size in current_files['size']]))
-    print("+" + "".join(["-" for j in range(longest_name + 5)]) + "+" + "".join(["-" for j in range(longest_size + 5)]) + "+")
-    print("| Name" + "".join([" " for j in range(longest_name)]) + "| Size" + "".join([" " for j in range(longest_size)]) + "|")
-    print("+" + "".join(["-" for j in range(longest_name + 5)]) + "+" + "".join(["-" for j in range(longest_size + 5)]) + "+")
+    print("```+" + "".join(["-" for j in range(longest_name + 5)]) + "+" + "".join(["-" for j in range(longest_size + 5)]) + "+```")
+    print("```| Name" + "".join([" " for j in range(longest_name)]) + "| Size" + "".join([" " for j in range(longest_size)]) + "|```")
+    print("```+" + "".join(["-" for j in range(longest_name + 5)]) + "+" + "".join(["-" for j in range(longest_size + 5)]) + "+```")
     for name, size in zip(current_files['name'], current_files['size']):
         if size == 0:
-            print("| " + name + "".join([" " for j in range(longest_name - len(name) + 4)]) + "| " + "".join([" " for j in range(longest_size + 4)]) + "|")
+            print("```| " + name + "".join([" " for j in range(longest_name - len(name) + 4)]) + "| " + "".join([" " for j in range(longest_size + 4)]) + "|```")
         else:    
-            print("| " + name + "".join([" " for j in range(longest_name - len(name) + 4)]) + "| " + str(size) + "".join([" " for j in range(longest_size - len(str(size)) + 4)]) + "|")
-    print("+" + "".join(["-" for j in range(longest_name + 5)]) + "+" + "".join(["-" for j in range(longest_size + 5)]) + "+")
+            print("```| " + name + "".join([" " for j in range(longest_name - len(name) + 4)]) + "| " + str(size) + "".join([" " for j in range(longest_size - len(str(size)) + 4)]) + "|```")
+    print("```+" + "".join(["-" for j in range(longest_name + 5)]) + "+" + "".join(["-" for j in range(longest_size + 5)]) + "+```")
 
 LIST_COMMANDS = []
 
