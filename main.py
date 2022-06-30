@@ -35,7 +35,7 @@ def run(code):
         sys.stdout = old_stdout
         output = new_stdout.getvalue()
         print(output)
-        fail = True
+        fail = False
     except Exception as e:
         sys.stdout = old_stdout
         output = str(e)
