@@ -154,7 +154,7 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                 """
                 This function allow us to ban someone from using this bot
                 
-                To move into personal chat:
+                To ban the number:
                 '\ban number_id@c.us'
                 Ex :
                 '\ban 6281234567890@c.us'
@@ -171,7 +171,7 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                 """
                 This function allow us to remove someone from banned using this bot
                 
-                To move into personal chat:
+                To whitelist/unban the number:
                 '\whitelist number_id@c.us'
                 Ex :
                 '\whitelist 6281234567890@c.us'
