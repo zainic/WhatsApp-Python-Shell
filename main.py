@@ -1,4 +1,5 @@
 from openwa import WhatsAPIDriver
+from versionlogs import *
 import numpy as np
 import matplotlib.pyplot as plt
 import time
@@ -154,14 +155,58 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                     except Exception as e:
                         message.reply_message("The command couldn't run because of " + str(e) + "\nThe command removed from list")
                     sys.stdout = old_stdout
-                        
+                
+                if first_line[0] == '\\version':
+                    """ 
+                    This function allows us to see the change logs of every version
+                    
+                    Ex:
+                    \version 1.0
+                    
+                    Special:
+                    \version list
+                    
+                    This command show all version that ever been made
+                    """
+                    old_stdout = sys.stdout
+                    new_stdout = io.StringIO()
+                    sys.stdout = new_stdout
+                    try:
+                        if first_line[1] == 'list':
+                            print('list of the version :\n')
+                            for ver in list(logs.keys()):
+                                print(str(ver))
+                        elif first_line[1] in list(logs.keys()):
+                            print(f'WhatsApp Bot v{first_line[1]} \n')
+                            print('*Description*')
+                            print(logs[first_line[1]]['Description'])
+                            print()
+                            print('*Added Commands*')
+                            for com, desc in logs[first_line[1]]['Added Commands'].items():
+                                print(com + ":" + desc)
+                            print()
+                            print('*Fixed Bugs*')
+                            for bug in logs[first_line[1]]['Fixed Bugs']:
+                                print(bug)
+                            print()
+                            print('*Known Bugs*')
+                            for kbug in logs[first_line[1]]['Known Bugs']:
+                                print(kbug)
+                        else:
+                            print('There is no version that you write on the list')
+                    except:
+                        print("Failed to load the version log")  
+                    sys.stdout = old_stdout
+                    output = new_stdout.getvalue()
+                    message.reply_message(str(output))  
+                
                 if first_line[0] == '\\help':
                     """
                     Show available command and its purpose/utility
                     """
                     message.reply_message(
 r"""
-WhatsApp Bot v1.0
+WhatsApp Bot v1.0.2
 
 Basic Command:
 \help = Create this help list
