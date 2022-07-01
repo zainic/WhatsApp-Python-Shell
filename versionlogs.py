@@ -23,7 +23,7 @@ logs = {
         'Fixed Bugs' : [
             'This is early version of WhatsApp Bot, The bugs fixes will described in next update',
         ],
-        'Known bugs' : [
+        'Known Bugs' : [
             'The open_dir command output is not align.',
             'The message sometimes detected twice, so the output also twice.',
             'The runs command sometimes failed to send the message.',

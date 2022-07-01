@@ -193,15 +193,15 @@ def start(only_me = True, chat_ids = chat_ids, user_id = user_id, LIST_COMMANDS 
                             print()
                             print('*Changes*')
                             for chng in logs[first_line[1]]['Changes']:
-                                print("-" + chng)
+                                print("- " + chng)
                             print()
                             print('*Fixed Bugs*')
                             for bug in logs[first_line[1]]['Fixed Bugs']:
-                                print("-" + bug)
+                                print("- " + bug)
                             print()
                             print('*Known Bugs*')
                             for kbug in logs[first_line[1]]['Known Bugs']:
-                                print("-" + kbug)
+                                print("- " + kbug)
                         else:
                             print('There is no version that you write on the list')
                     except:
@@ -241,6 +241,10 @@ r"""
 ```  Syntax : \remove number_id@c.us ```
 ```           \remove group_id@g.us```
 ```           \remove this```
+```\add_op = Add someone from being operator```
+```  Syntax : \add_op number_id@c.us ```
+```\remove_op = Remove someone from being operator```
+```  Syntax : \remove_op number_id@c.us ```
 
 ```General Command :```
 ```\run = Run python program```
@@ -481,6 +485,7 @@ r"""
                             chat_ids.remove(chat_id)
                             message.reply_message(f"Success to remove from {chat_id}")
                             print("Success to remove")
+                            continue
                         old_chat_id = first_line[1]
                         id_type = old_chat_id[-4:]
                         if id_type in ["c.us", "g.us"] and old_chat_id in chat_ids:
@@ -510,10 +515,10 @@ r"""
                         if new_op not in operator_id:
                             operator_id.append(new_op)
                             message.reply_message(f"Success to add {new_op} to become operator")
-                            print("Success to add {new_op} to become operator")
+                            print(f"Success to add {new_op} to become operator")
                         else:
                             message.reply_message(f"{new_op} is an operator")
-                            print("Failed to add {new_op} to become operator")
+                            print(f"Failed to add {new_op} to become operator")
                     else:
                         message.reply_message(f"You can't add him to be operator")
                         print(f"Failed to add operator for the bot")
@@ -537,10 +542,10 @@ r"""
                         elif old_op in operator_id:
                             operator_id.remove(old_op)
                             message.reply_message(f"Success to remove {old_op} from being operator")
-                            print("Success to remove {old_op} from being operator")
+                            print(f"Success to remove {old_op} from being operator")
                         else:
                             message.reply_message(f"{old_op} is not an operator")
-                            print("Failed to remove {old_op} from being operator")
+                            print(f"Failed to remove {old_op} from being operator")
                     else:
                         message.reply_message(f"You can't remove him from being operator")
                         print(f"Failed to remove being operator for the bot")
