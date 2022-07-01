@@ -190,6 +190,10 @@ def start(only_me = True, chat_ids = chat_ids, user_id = user_id):
                             for com, desc in logs[first_line[1]]['Added Commands'].items():
                                 print(com + " : " + desc)
                             print()
+                            print('*Changes*')
+                            for chng in logs[first_line[1]]['Changes']:
+                                print("-" + chng)
+                            print()
                             print('*Fixed Bugs*')
                             for bug in logs[first_line[1]]['Fixed Bugs']:
                                 print("-" + bug)
