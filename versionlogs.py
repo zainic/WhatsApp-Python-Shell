@@ -48,10 +48,11 @@ logs = {
         },
         'Fixed Bugs' : [
             'The open_dir command output is now aligned.',
-            'The message no longer sometimes detected twice.'
+            'The messages less likely be detected twice.'
         ],
         'Known bugs' : [
             'The runs command sometimes failed to send the message.',
+            'The messages still can detected twice'
             'When sending files from PC often to be failed.',
         ],
     },
