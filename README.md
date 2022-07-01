@@ -1,4 +1,4 @@
-# WhatsApp-Python-Shell v1.0
+# WhatsApp-Python-Shell v1.1
 Create python shell in WhatsApp. It's allow us to connect the phone and PC using WhatsApp
 
 ## Requirement
@@ -84,7 +84,167 @@ After that you can run the command in your WhatsApp
 
 ## How to Use It
 
-### run
+### Basic Command
+
+#### help
+
+`\help`
+
+Show list of commandw with its utility and how to use it.
+
+#### version
+
+This function allows us to see the change logs of every version
+
+`\version number_version`
+
+Ex:
+
+`\version 1.0`
+                    
+Special:
+
+`\version list`
+                    
+This command show all version that ever been made
+
+
+### Operator Command
+
+#### duplicate
+
+This function allow us to duplicate the place of bot to some id
+                    
+To duplicate into personal chat:
+
+`\duplicate number_id@c.us`
+
+Ex :
+
+`\duplicate 6281234567890@c.us`
+                    
+To duplicate into group:
+
+`\duplicate group_id@g.us`
+
+Ex :
+
+`\duplicate 120363041488034042@g.us`
+
+#### remove
+
+This function allow us to remove a place of bot to someid
+                    
+To remove from personal chat:
+
+`\remove number_id@c.us`
+
+Ex :
+
+`\remove 6281234567890@c.us`
+
+To remove from group:
+
+`\remove group_id@g.us`
+
+Ex :
+
+`\remove 120363041488034042@g.us`
+                    
+To remove current id:
+
+`\remove this`
+
+#### add_op
+
+This function allow us to add operator for using this bot
+                    
+To add operator to using this bot:
+
+`\add_op number_id@c.us`
+
+Ex :
+
+`\add_op 6281234567890@c.us`
+
+#### remove_op
+
+This function allow us to remove operator from using this bot
+                    
+To remove operator from using this bot:
+
+`\remove_op number_id@c.us`
+
+Ex :
+
+`\remove_op 6281234567890@c.us`
+
+#### change
+
+This function allow us to change the target of bot or move the bot's place.
+                
+To move into personal chat:
+
+`\change number_id@c.us`
+
+Ex :
+
+`\change 6281234567890@c.us`
+                
+To move into group:
+
+`\change group_id@g.us`
+
+Ex :
+
+`\change 120363041488034042@g.us`
+
+
+#### ban
+
+This function allow us to ban someone from using this bot.
+                
+To ban the number:
+
+`\ban number_id@c.us`
+
+Ex :
+
+`\ban 6281234567890@c.us`
+
+#### whitelist
+
+This function allow us to remove someone from banned using this bot.
+                
+To remove number from ban:
+
+`\whitelist number_id@c.us`
+
+Ex :
+
+`\whitelist 6281234567890@c.us`
+
+#### home
+
+`\home`
+
+Bot move to user id.
+                
+It prevent spamming from group.
+
+#### toggle_only_me
+
+
+
+#### exit
+
+`\exit`
+
+Exit the connection to driver.
+
+### General Command
+
+#### run
 This function allows us to run python program like in command prompt or shell.
 
 
@@ -110,7 +270,7 @@ and it'll send to WhatsApp.
 
 - If you declare function and want call it later write `global function` before define the function.
 
-### runs
+#### runs
 
 This function similar to run command but it allow us to send to specific person.
 
@@ -137,7 +297,7 @@ and it'll send to those id
 
 - If you declare function and want call it later write 'global function' before define the function.
 
-### add
+#### add
 This function allows us to add our own command using WhatsApp.
                 
 Ex:
@@ -166,7 +326,7 @@ The output should be
 
 `15`
                 
-### open_dir
+#### open_dir
 
 This function allows us to explore our PC's folder using WhatsApp.
 
@@ -194,7 +354,7 @@ To exit the explorer type this command
 
 `\quit`
 
-### sticker
+#### sticker
 
 This function will allow us to convert any image into sticker in WhatsApp.
                 
@@ -207,61 +367,3 @@ Ex:
 Then, it will wait the command sender to upload the image.
                 
 It should return picture into sticker once they send the image.
-
-### change
-
-This function allow us to change the target of bot or move the bot's place.
-                
-To move into personal chat:
-
-`\change number_id@c.us`
-
-Ex :
-
-`\change 6281234567890@c.us`
-                
-To move into group:
-
-`\change group_id@g.us`
-
-Ex :
-
-`\change 120363041488034042@g.us`
-
-### ban
-
-This function allow us to ban someone from using this bot.
-                
-To ban the number:
-
-`\ban number_id@c.us`
-
-Ex :
-
-`\ban 6281234567890@c.us`
-
-### whitelist
-
-This function allow us to remove someone from banned using this bot.
-                
-To remove number from ban:
-
-`\whitelist number_id@c.us`
-
-Ex :
-
-`\whitelist 6281234567890@c.us`
-
-### home
-
-`\home`
-
-Bot move to user id.
-                
-It prevent spamming from group.
-                
-### exit
-
-`\exit`
-
-Exit the connection to driver.
