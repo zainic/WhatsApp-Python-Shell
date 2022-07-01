@@ -180,7 +180,7 @@ def start(only_me = True, chat_ids = chat_ids, user_id = user_id):
                         if first_line[1] == 'list':
                             print('list of the version :\n')
                             for ver in list(logs.keys()):
-                                print(str(ver))
+                                print("```-> v" + str(ver) + "```")
                         elif first_line[1] in list(logs.keys()):
                             print(f'WhatsApp Bot v{first_line[1]} \n')
                             print('*Description*')
@@ -188,15 +188,15 @@ def start(only_me = True, chat_ids = chat_ids, user_id = user_id):
                             print()
                             print('*Added Commands*')
                             for com, desc in logs[first_line[1]]['Added Commands'].items():
-                                print(com + ":" + desc)
+                                print(com + " : " + desc)
                             print()
                             print('*Fixed Bugs*')
                             for bug in logs[first_line[1]]['Fixed Bugs']:
-                                print(bug)
+                                print("-" + bug)
                             print()
                             print('*Known Bugs*')
                             for kbug in logs[first_line[1]]['Known Bugs']:
-                                print(kbug)
+                                print("-" + kbug)
                         else:
                             print('There is no version that you write on the list')
                     except:
@@ -212,11 +212,12 @@ def start(only_me = True, chat_ids = chat_ids, user_id = user_id):
                     message.reply_message(
 r"""
 ```WhatsApp Bot v1.1```
-``` ```
+
 ```Basic Command:```
 ```\help = Create this help list```
-```\help = Create this help list```
-``` ```
+```\version = Create this help list```
+```  Syntax : \version number_version```
+
 ```Operator Command :```
 ```\exit = Exit the bot```
 ```\home = Move bot to user id place```
@@ -227,7 +228,14 @@ r"""
 ```\change = Change the target of bot or move the bot's place```
 ```  Syntax : \change number_id@c.us ```
 ```           \change group_id@g.us```
-``` ```
+```\duplicate = Change the target of bot or move the bot's place```
+```  Syntax : \duplicate number_id@c.us ```
+```           \duplicate group_id@g.us```
+```\remove = Change the target of bot or move the bot's place```
+```  Syntax : \remove number_id@c.us ```
+```           \remove group_id@g.us```
+```           \remove this```
+
 ```General Command :```
 ```\run = Run python program```
 ```  Syntax : \run```
@@ -236,7 +244,7 @@ r"""
 ```           your_line_code_3```
 ```           more_line```
 ```\runs = Similar to run command but send to multiple target```
-```  Syntax : \runs number_id1 number_id2 number_id3```
+```  Syntax : \runs number_id1 number_id2```
 ```\add = Add custom command to this bot```
 ```  Syntax : \add function```
 ```            def function(input1, input2):```
@@ -280,9 +288,16 @@ r"""
                     It prevent spamming from group
                     """
                     if sender_id == user_id:
-                        chat_id = user_id
+                        try:
+                            chat_ids.remove(chat_id)
+                        except Exception as e:
+                            print(e)
                         message.reply_message(f"Bot is going home\nBye Bye")
-                        print("Bot is going home")
+                        if user_id in chat_ids:
+                            print("Bot is merged at home")
+                        else:
+                            print("Bot is going home")
+                            chat_ids.append(user_id)
                         break
                     else:
                         message.reply_message(f"You didn't have authority to do that")
@@ -416,6 +431,43 @@ r"""
                     else:
                         message.reply_message(f"You can't duplicate me")
                         print("Failed to duplicate the bot")
+                        
+                if first_line[0] == '\\remove':
+                    """
+                    This function allow us to remove a place of bot to someid
+                    
+                    To remove from personal chat:
+                    '\remove number_id@c.us'
+                    Ex :
+                    '\remove 6281234567890@c.us'
+                    
+                    To remove from group:
+                    '\remove group_id@g.us'
+                    Ex :
+                    '\remove 120363041488034042@g.us'
+                    
+                    To remove current id:
+                    '\remove this'
+                    
+                    (without using '')
+                    """
+                    if sender_id == user_id:
+                        if first_line[1] == 'this':
+                            chat_ids.remove(chat_id)
+                            message.reply_message(f"Success to remove from {chat_id}")
+                            print("Success to remove")
+                        old_chat_id = first_line[1]
+                        id_type = old_chat_id[-4:]
+                        if id_type in ["c.us", "g.us"] and old_chat_id in chat_ids:
+                            chat_ids.remove(old_chat_id)
+                            message.reply_message(f"Success to remove from {old_chat_id}")
+                            print("Success to removed")
+                        else:
+                            message.reply_message(f"Cannot remove to {old_chat_id} because of invalid id")
+                            print("Failed to remove the bot because of invalid id")
+                    else:
+                        message.reply_message(f"You can't remove me from it")
+                        print(f"Failed to remove the bot from {old_chat_id}")
                 
                 if first_line[0] == '\\run':
                     """
