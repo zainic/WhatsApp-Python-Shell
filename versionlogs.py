@@ -43,6 +43,8 @@ logs = {
             'remove' : 'Show list of version and its change logs.',
             'toggle_only_me' : 'Toggle the only me variable for using the bot.',
             'version' : 'Show list of version and its change logs.',
+            'add_op' : 'Add someone to being operator',
+            'remove_op' : 'remove someone from being operator',
         },
         'Fixed Bugs' : [
             'The open_dir command output is now aligned.',

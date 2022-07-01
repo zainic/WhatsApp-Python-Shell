@@ -159,6 +159,7 @@ def start(only_me = True, chat_ids = chat_ids, user_id = user_id, LIST_COMMANDS 
                         exec(code_command)
                     except Exception as e:
                         message.reply_message("The command couldn't run because of " + str(e) + "\nThe command removed from list")
+                        LIST_COMMANDS.remove(code_command)
                     sys.stdout = old_stdout
                 
                 if first_line[0] == '\\version':
@@ -327,7 +328,7 @@ r"""
                             message.reply_message(f"The id {first_line[1]} has already banned")
                         else:
                             message.reply_message(f"failed to ban {first_line[1]} because he's the operator")
-                     else:
+                    else:
                         message.reply_message(f"You are not allowed to ban someone")
                 
                 if first_line[0] == '\\whitelist':
@@ -492,6 +493,57 @@ r"""
                     else:
                         message.reply_message(f"You can't remove me from it")
                         print(f"Failed to remove the bot from {old_chat_id}")
+                
+                if first_line[0] == '\\add_op':
+                    """
+                    This function allow us to add operator for using this bot
+                    
+                    To add operator to using this bot:
+                    '\add_op number_id@c.us'
+                    Ex :
+                    '\add_op 6281234567890@c.us'
+                    
+                    (without using '')
+                    """
+                    if sender_id in operator_id:
+                        new_op = first_line[1]
+                        if new_op not in operator_id:
+                            operator_id.append(new_op)
+                            message.reply_message(f"Success to add {new_op} to become operator")
+                            print("Success to add {new_op} to become operator")
+                        else:
+                            message.reply_message(f"{new_op} is an operator")
+                            print("Failed to add {new_op} to become operator")
+                    else:
+                        message.reply_message(f"You can't add him to be operator")
+                        print(f"Failed to add operator for the bot")
+                        
+                if first_line[0] == '\\remove_op':
+                    """
+                    This function allow us to remove operator from using this bot
+                    
+                    To remove operator from using this bot:
+                    '\remove_op number_id@c.us'
+                    Ex :
+                    '\remove_op 6281234567890@c.us'
+                    
+                    (without using '')
+                    """
+                    if sender_id in operator_id:
+                        old_op = first_line[1]
+                        if old_op == user_id:
+                            message.reply_message(f"{old_op} is an admin (main operator)")
+                            print("Failed to remove {old_op} ")
+                        elif old_op in operator_id:
+                            operator_id.remove(old_op)
+                            message.reply_message(f"Success to remove {old_op} from being operator")
+                            print("Success to remove {old_op} from being operator")
+                        else:
+                            message.reply_message(f"{old_op} is not an operator")
+                            print("Failed to remove {old_op} from being operator")
+                    else:
+                        message.reply_message(f"You can't remove him from being operator")
+                        print(f"Failed to remove being operator for the bot")
                 
                 if first_line[0] == '\\run':
                     """
