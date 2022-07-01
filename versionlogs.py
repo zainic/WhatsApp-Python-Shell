@@ -30,7 +30,7 @@ logs = {
         ],
     },
     '1.1' : {
-        'Description' : "Hey there, Now the bot can be placed in multiple chat room or groups. This update mostly for security things and operator only command. Also now you can see the version log by using \\version command to see how the program was developed. There is also some bug fixes from previous version",
+        'Description' : "Hey there, Now the bot can be placed in multiple chat room or groups. The operator (someone that can control the bot) can be multiple. This update mostly for security things and operator only command. Also now you can see the version log by using \\version command to see how the program was developed. There is also some bug fixes from previous version",
         'Changes' : [
             "The command home, exit, change, ban, and whitelist now only can be used by operator.",
             "Change chat_id variable to list since it now can be more than one place.",
