@@ -221,6 +221,7 @@ r"""
 ```Operator Command :```
 ```\exit = Exit the bot```
 ```\home = Move bot to user id place```
+```\toggle_only_me = turn on/off only me for using bot```
 ```\ban = Ban someone from using this bot```
 ```  Syntax : \ban number_id@c.us```
 ```\whitelist = Remove someone from banned using this bot```
@@ -342,6 +343,17 @@ r"""
                             message.reply_message(f"{first_line[1]} is not in banned list")
                     else:
                         message.reply_message(f"You are not allowed whitelist someone")
+                        
+                if first_line[0] == '\\toggle_only_me':
+                    """
+                    This function allow us to set only me (operator) on or off that could use the bot 
+                    """
+                    if only_me:
+                        only_me = False
+                    else:
+                        only_me = True
+                    
+                
                 if first_line[0] == '\\change':
                     """
                     This function allow us to change the target of bot or move the bot's place
