@@ -9,7 +9,7 @@ import os, sys
 import re
 
 """
-WhatsApp Bot v1.0
+WhatsApp Bot v1.1
 
 This Program allow us to run the python code and return the output into WhatsApp.
 Even you can create your own command in WhatsApp.
