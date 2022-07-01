@@ -90,8 +90,6 @@ def create_table_from_dir(directory):
             print("```| " + name + "".join([" " for j in range(longest_name - len(name) + 4)]) + "| " + str(size) + "".join([" " for j in range(longest_size - len(str(size)) + 4)]) + "|```")
     print("```+" + "".join(["-" for j in range(longest_name + 5)]) + "+" + "".join(["-" for j in range(longest_size + 5)]) + "+```")
 
-LIST_COMMANDS = []
-
 def login():
     # Initial Login
     global driver
@@ -111,9 +109,10 @@ driver = login()
 user_id = input("Input your number using your country code for first digit and end with @c.us \nEx : 6281349237723@c.us (62 for Indonesia)\ninput here :")
 chat_ids = [input("Input your group id or chat id for place the bot\nThe instruction to get the id would be on README\ninput here :")]
 
-def start(only_me = True, chat_ids = chat_ids, user_id = user_id):
+def start(only_me = True, chat_ids = chat_ids, user_id = user_id, LIST_COMMANDS = []):
     # if only_me set to be True, only you can use this command
     # chat_id can be customized
+    global chat_id, message
     banned_id = []
     exit = False
     while not exit:
