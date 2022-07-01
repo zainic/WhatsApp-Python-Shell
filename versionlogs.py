@@ -35,6 +35,7 @@ logs = {
             "The command home, exit, change, ban, and whitelist now only can be used by operator.",
             "Change chat_id variable to list since it now can be more than one place.",
             "Create version logs",
+            "Operator can be multiple",
         ],
         'Added Commands' : {
             'version' : 'Show list of version and its change logs.',

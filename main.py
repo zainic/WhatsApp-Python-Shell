@@ -113,6 +113,7 @@ def start(only_me = True, chat_ids = chat_ids, user_id = user_id, LIST_COMMANDS 
     # if only_me set to be True, only you can use this command
     # chat_id can be customized
     global chat_id, message
+    operator_id = [user_id]
     banned_id = []
     exit = False
     while not exit:
@@ -278,7 +279,7 @@ r"""
                     """
                     Exit the connection to driver
                     """
-                    if sender_id == user_id:
+                    if sender_id in operator_id:
                         exit = True
                         message.reply_message(f"Exitting the bot\nSee you in the other side")
                         print("Exit the bot")
@@ -291,7 +292,7 @@ r"""
                     Bot move to user id
                     It prevent spamming from group
                     """
-                    if sender_id == user_id:
+                    if sender_id in operator_id:
                         try:
                             chat_ids.remove(chat_id)
                         except Exception as e:
@@ -318,13 +319,16 @@ r"""
                     
                     (without using '')
                     """
-                    if first_line[1] != user_id:
-                        banned_id.append(first_line[1])
-                        message.reply_message(f"successfully ban {first_line[1]}")
-                    elif first_line[1] in banned_id:
-                        message.reply_message(f"The id {first_line[1]} has already banned")
-                    else:
-                        message.reply_message(f"failed to ban {first_line[1]} because he's the creator")
+                    if sender_id in operator_id:
+                        if first_line[1] not in operator_id:
+                            banned_id.append(first_line[1])
+                            message.reply_message(f"successfully ban {first_line[1]}")
+                        elif first_line[1] in banned_id:
+                            message.reply_message(f"The id {first_line[1]} has already banned")
+                        else:
+                            message.reply_message(f"failed to ban {first_line[1]} because he's the operator")
+                     else:
+                        message.reply_message(f"You are not allowed to ban someone")
                 
                 if first_line[0] == '\\whitelist':
                     """
@@ -337,7 +341,7 @@ r"""
                     
                     (without using '')
                     """
-                    if sender_id == user_id:
+                    if sender_id in operator_id:
                         if first_line[1] in banned_id:
                             banned_id.remove(first_line[1])
                             message.reply_message(f"whitelist {first_line[1]}")
@@ -351,10 +355,15 @@ r"""
                     """
                     This function allow us to set only me (operator) on or off that could use the bot 
                     """
-                    if only_me:
-                        only_me = False
+                    if sender_id in operator_id:
+                        if only_me:
+                            only_me = False
+                        else:
+                            only_me = True
+                        message.reply_message("Succeccfully changed")
                     else:
-                        only_me = True
+                        message.reply_message("Succeccfully not changed")
+
                     
                 
                 if first_line[0] == '\\change':
@@ -373,7 +382,7 @@ r"""
                     
                     (without using '')
                     """
-                    if sender_id == user_id:
+                    if sender_id in operator_id:
                         new_chat_id = first_line[1]
                         id_type = new_chat_id[-4:]
                         if id_type == "c.us":
@@ -419,7 +428,7 @@ r"""
                     
                     (without using '')
                     """
-                    if sender_id == user_id:
+                    if sender_id in operator_id:
                         new_chat_id = first_line[1]
                         id_type = new_chat_id[-4:]
                         if id_type == "c.us":
@@ -466,7 +475,7 @@ r"""
                     
                     (without using '')
                     """
-                    if sender_id == user_id:
+                    if sender_id in operator_id:
                         if first_line[1] == 'this':
                             chat_ids.remove(chat_id)
                             message.reply_message(f"Success to remove from {chat_id}")
