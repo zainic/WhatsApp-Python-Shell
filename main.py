@@ -48,9 +48,14 @@ def run(code):
     return output, fail
 
 # Check new message
-def check_new_message(driver, chat_id, include_me=True, exit=False):
+def check_new_message(driver, chat_ids, include_me=True, exit=False):
     while True:
-        new_messages = driver.get_unread_messages_in_chat(chat_id, include_me)
+        new_messages = []
+        for chat_id in chat_ids:
+            message_from_chat_id = driver.get_unread_messages_in_chat(chat_id, include_me=include_me)
+            for msg in message_from_chat_id:
+                new_messages.append((msg, chat_id))
+            
         if not driver.is_connected():
             print("Connecting To Server")
             if detect(2):
@@ -104,9 +109,9 @@ def login():
 driver = login()
 
 user_id = input("Input your number using your country code for first digit and end with @c.us \nEx : 6281349237723@c.us (62 for Indonesia)\ninput here :")
-chat_id = input("Input your group id or chat id for place the bot\nThe instruction to get the id would be on README\ninput here :")
+chat_ids = [input("Input your group id or chat id for place the bot\nThe instruction to get the id would be on README\ninput here :")]
 
-def start(only_me = True, chat_id = chat_id, user_id = user_id):
+def start(only_me = True, chat_ids = chat_ids, user_id = user_id):
     # if only_me set to be True, only you can use this command
     # chat_id can be customized
     banned_id = []
@@ -121,11 +126,11 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
             continue
         
         # Check if there are new message
-        exit, new_messages = check_new_message(driver, chat_id)
+        exit, new_messages = check_new_message(driver, chat_ids)
         
         try:
             # Get command message and run it
-            for message in new_messages:
+            for message, chat_id in new_messages:
                 sender_id = message.sender.id
                 # Check the command keyword
                 try:
@@ -206,14 +211,15 @@ def start(only_me = True, chat_id = chat_id, user_id = user_id):
                     """
                     message.reply_message(
 r"""
-```WhatsApp Bot v1.0.2```
+```WhatsApp Bot v1.1```
 ``` ```
 ```Basic Command:```
 ```\help = Create this help list```
-```\exit = Exit the bot```
-```\home = Move bot to user id place```
+```\help = Create this help list```
 ``` ```
 ```Operator Command :```
+```\exit = Exit the bot```
+```\home = Move bot to user id place```
 ```\ban = Ban someone from using this bot```
 ```  Syntax : \ban number_id@c.us```
 ```\whitelist = Remove someone from banned using this bot```
@@ -240,18 +246,19 @@ r"""
 ```              return optional```
 ```  To call the command : \function input1 input2```
 ```\open_dir = Open and list file_path directory like explorer ```
-```            (default : current directory or github directory)```
+```  (default : current directory or github directory)```
 ```  Syntax : \open_dir "file_path"```
 ```  Sub command from this command :```
 ```    \quit = Quit the explorer```
 ```    \cd = Open the folder```
 ```      Syntax : \cd "name_folder"```
 ```    \send = Send file from current directory```
-```       Syntax : \send "name_file"```
-```\sticker = Convert image from command's sender into whatsapp sticker```
-```    Syntax : \sticker```
-```        *Send the command first```
-```            Upload the image```
+```      Syntax : \send "name_file"```
+```\sticker = Convert image from command's sender```
+```           into whatsapp sticker```
+```  Syntax : \sticker```
+```    *Send the command first```
+```           Upload the image```
 """
                     )
                     
@@ -259,16 +266,27 @@ r"""
                     """
                     Exit the connection to driver
                     """
-                    exit = True
-                    print("Exit the bot")
-                    break
+                    if sender_id == user_id:
+                        exit = True
+                        message.reply_message(f"Exitting the bot\nSee you in the other side")
+                        print("Exit the bot")
+                        break
+                    else:
+                        message.reply_message(f"You didn't have authority to do that")
                 
                 if first_line[0] == '\\home':
                     """
                     Bot move to user id
                     It prevent spamming from group
                     """
-                    chat_id = user_id
+                    if sender_id == user_id:
+                        chat_id = user_id
+                        message.reply_message(f"Bot is going home\nBye Bye")
+                        print("Bot is going home")
+                        break
+                    else:
+                        message.reply_message(f"You didn't have authority to do that")
+                    
                 
                 if first_line[0] == '\\ban':
                     """
@@ -284,6 +302,8 @@ r"""
                     if first_line[1] != user_id:
                         banned_id.append(first_line[1])
                         message.reply_message(f"successfully ban {first_line[1]}")
+                    elif first_line[1] in banned_id:
+                        message.reply_message(f"The id {first_line[1]} has already banned")
                     else:
                         message.reply_message(f"failed to ban {first_line[1]} because he's the creator")
                 
@@ -323,29 +343,79 @@ r"""
                     
                     (without using '')
                     """
-                    new_chat_id = first_line[1]
-                    id_type = new_chat_id[-4:]
-                    if id_type == "c.us":
-                        stat = driver.check_number_status(new_chat_id).status
-                        if stat == 200:
-                            chat_id = new_chat_id
-                            message.reply_message(f"Success to move to {new_chat_id}")
-                            print("Success to move")
+                    if sender_id == user_id:
+                        new_chat_id = first_line[1]
+                        id_type = new_chat_id[-4:]
+                        if id_type == "c.us":
+                            stat = driver.check_number_status(new_chat_id).status
+                            if stat == 200 and new_chat_id not in chat_ids:
+                                index_id = chat_ids.index(chat_id)
+                                chat_ids[index_id] = new_chat_id
+                                message.reply_message(f"Success to move to {new_chat_id}")
+                                print("Success to move")
+                            else:
+                                message.reply_message(f"Failed to move to {new_chat_id} because user inactive or invalid number")
+                                print("User inactive or not valid number")
+                        elif id_type == "g.us":
+                            member = driver.group_get_participants_ids(new_chat_id)
+                            if len(member) > 0 and new_chat_id not in chat_ids:
+                                index_id = chat_ids.index(chat_id)
+                                chat_ids[index_id] = new_chat_id
+                                message.reply_message(f"Success to move to {new_chat_id}")
+                                print("Success to move")
+                            else:
+                                message.reply_message(f"Failed to move to {new_chat_id} because of not participant of this group or invalid group")
+                                print("You are not participant of this group or invalid group")
                         else:
-                            message.reply_message(f"Failed to move to {new_chat_id} because user inactive or invalid number")
-                            print("User inactive or not valid number")
-                    elif id_type == "g.us":
-                        member = driver.group_get_participants_ids(new_chat_id)
-                        if len(member) > 0:
-                            chat_id = new_chat_id
-                            message.reply_message(f"Success to move to {new_chat_id}")
-                            print("Success to move")
-                        else:
-                            message.reply_message(f"Failed to move to {new_chat_id} because of not participant of this group or invalid group")
-                            print("You are not participant of this group or invalid group")
+                            message.reply_message(f"Cannot move to {new_chat_id} because of invalid id")
+                            print("Failed to move the bot because of invalid id")
                     else:
-                        message.reply_message(f"Cannot move to {new_chat_id} because of invalid id")
-                        print("Failed to move the bot because of invalid id")
+                        message.reply_message(f"Who are you want to send me out?")
+                        print("Failed to move the bot")
+                
+                if first_line[0] == '\\duplicate':
+                    """
+                    This function allow us to duplicate the place of bot to someid
+                    
+                    To duplicate into personal chat:
+                    '\duplicate number_id@c.us'
+                    Ex :
+                    '\duplicate 6281234567890@c.us'
+                    
+                    To duplicate into group:
+                    '\duplicate group_id@g.us'
+                    Ex :
+                    '\duplicate 120363041488034042@g.us'
+                    
+                    (without using '')
+                    """
+                    if sender_id == user_id:
+                        new_chat_id = first_line[1]
+                        id_type = new_chat_id[-4:]
+                        if id_type == "c.us":
+                            stat = driver.check_number_status(new_chat_id).status
+                            if stat == 200 and new_chat_id not in chat_ids:
+                                chat_ids.append(new_chat_id)
+                                message.reply_message(f"Success to duplicate to {new_chat_id}")
+                                print("Success to duplicate")
+                            else:
+                                message.reply_message(f"Failed to duplicate to {new_chat_id} because user inactive or invalid number")
+                                print("User inactive or not valid number")
+                        elif id_type == "g.us":
+                            member = driver.group_get_participants_ids(new_chat_id)
+                            if len(member) > 0 and new_chat_id not in chat_ids:
+                                chat_ids.append(new_chat_id)
+                                message.reply_message(f"Success to duplicate to {new_chat_id}")
+                                print("Success to duplicate")
+                            else:
+                                message.reply_message(f"Failed to duplicate to {new_chat_id} because of not participant of this group or invalid group")
+                                print("You are not participant of this group or invalid group")
+                        else:
+                            message.reply_message(f"Cannot duplicate to {new_chat_id} because of invalid id")
+                            print("Failed to duplicate the bot because of invalid id")
+                    else:
+                        message.reply_message(f"You can't duplicate me")
+                        print("Failed to duplicate the bot")
                 
                 if first_line[0] == '\\run':
                     """
@@ -511,9 +581,9 @@ r"""
                             show = False
                         
                         # Check local new message
-                        quit, messages = check_new_message(driver, chat_id, exit = quit)
+                        quit, messages = check_new_message(driver, [chat_id], exit = quit)
                         
-                        for msg in messages:
+                        for msg, _ in messages:
                             sender_id2 = msg.sender.id
                             # Check the command keyword
                             try:
