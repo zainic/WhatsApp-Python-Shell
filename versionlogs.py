@@ -50,7 +50,7 @@ logs = {
             'The open_dir command output is now aligned.',
             'The messages less likely be detected twice.'
         ],
-        'Known bugs' : [
+        'Known Bugs' : [
             'The runs command sometimes failed to send the message.',
             'The messages still can detected twice'
             'When sending files from PC often to be failed.',
