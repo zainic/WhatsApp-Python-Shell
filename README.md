@@ -1,4 +1,4 @@
-# WhatsApp-Python-Shell
+# WhatsApp-Python-Shell v1.0
 Create python shell in WhatsApp. It's allow us to connect the phone and PC using WhatsApp
 
 ## Requirement
